@@ -82,7 +82,7 @@ def profile(username):
     # grab the session user's username from db
     username = mongo.db.users.find_one(
         {"username": session["user"]})["username"]
-    # square bracket at end denotes that 
+    # square bracket at end denotes that
     # we only want to return the username from the user
 
     if session["user"]:
@@ -99,8 +99,26 @@ def logout():
     return redirect(url_for("login"))
 
 
-@app.route("/add_task")
+@app.route("/add_task", methods=["GET", "POST"])
 def add_task():
+    if request.method == "POST":
+        is_urgent = "on" if request.form.get("is_urgent") else "off"
+        task = {
+            "category_name": request.form.get("category_name"),
+            "task_name": request.form.get("task_name"),
+            "task_description": request.form.get("task_description"),
+            "is_urgent": is_urgent,
+            "due_date": request.form.get("due_date"),
+            "created_by": session["user"]
+        }
+        mongo.db.tasks.insert_one(task)
+        flash("Task succesfully added")
+        return redirect(url_for("get_tasks"))
+        # If the method is post, the code above will get the form data
+        # and add it to the database using .insert_one
+        # otherwise if method is GET, it will displaty a blank form to 
+        # be filled out.
+
     categories = mongo.db.categories.find().sort("category_name", 1)
     # finds categories from mongo db and sorts by ascending
     return render_template("add_task.html", categories=categories)
