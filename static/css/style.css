@@ -1,5 +1,17 @@
+.brand-logo{
+    margin: 0 2%;
+}
+
+.nav-wrapper ul{
+    margin-right: 2%;
+}
+
 .text-shadow{
     text-shadow:  2px 2px rgba(0,0,0,0.5); 
+}
+
+.no-shadow{
+    text-shadow: none;
 }
 
 .flashes h4{
@@ -19,3 +31,4 @@
     margin: 5px;
     line-height: 42px;
 }
+
