@@ -153,6 +153,13 @@ def delete_task(task_id):
     return redirect(url_for("get_tasks"))
 
 
+@app.route("/get-categories")
+def get_categories():
+    tasks = list(mongo.db.tasks.find())
+    categories = list(mongo.db.categories.find().sort("category_name", 1))
+    return render_template("categories.html", tasks=tasks, categories=categories)
+
+
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=(os.environ.get("PORT")),
